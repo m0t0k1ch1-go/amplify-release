@@ -26,6 +26,8 @@ func main() {
 	switch cmd := kc.Command(); cmd {
 	case "deploy":
 		cmdErr = client.Deploy(ctx, amplifyx.CLI.Deploy)
+	case "version":
+		fmt.Printf("amplifyx %s\n", client.Version())
 	default:
 		cmdErr = oops.Errorf("unexpected command: %s", cmd)
 	}
