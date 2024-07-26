@@ -21,11 +21,16 @@ func main() {
 		fatal(oops.Wrapf(err, "failed to initialize client"))
 	}
 
+	var cmdErr error
+
 	switch cmd := kc.Command(); cmd {
 	case "deploy":
-		client.Deploy(ctx, amplifyx.CLI.Deploy)
+		cmdErr = client.Deploy(ctx, amplifyx.CLI.Deploy)
 	default:
-		fatal(oops.Errorf("unexpected command: %s", cmd))
+		cmdErr = oops.Errorf("unexpected command: %s", cmd)
+	}
+	if cmdErr != nil {
+		fatal(cmdErr)
 	}
 }
 
