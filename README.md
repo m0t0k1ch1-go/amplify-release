@@ -1,1 +1,1 @@
-# amplify-releaser
+# amplifyx
