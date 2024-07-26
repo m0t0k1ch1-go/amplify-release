@@ -11,14 +11,17 @@ import (
 	"github.com/samber/oops"
 )
 
+// CLI represents the command-line interface.
 var CLI struct {
 	Deploy DeployArgs `cmd:""`
 }
 
+// Client is a client for AWS Amplify.
 type Client struct {
 	amplify *awsamplify.Client
 }
 
+// NewClient returns a new Client.
 func NewClient(ctx context.Context) (*Client, error) {
 	awsConf, err := awsconfig.LoadDefaultConfig(ctx)
 	if err != nil {
@@ -30,6 +33,7 @@ func NewClient(ctx context.Context) (*Client, error) {
 	}, nil
 }
 
+// DeployArgs is the set of arguments for Deploy.
 type DeployArgs struct {
 	AppID               string        `required:""`
 	BranchName          string        `default:"main"`
@@ -37,6 +41,7 @@ type DeployArgs struct {
 	ObservationInterval time.Duration `default:"5s"`
 }
 
+// Deploy starts a release job and waits for it to complete.
 func (c *Client) Deploy(ctx context.Context, args DeployArgs) error {
 	var jobSummary *awsamplifytypes.JobSummary
 
