@@ -2,6 +2,7 @@ package amplifyx
 
 import (
 	"context"
+	"runtime/debug"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -13,7 +14,8 @@ import (
 
 // CLI represents the command-line interface.
 var CLI struct {
-	Deploy DeployArgs `cmd:""`
+	Deploy  DeployArgs `cmd:""`
+	Version struct{}   `cmd:""`
 }
 
 // Client is a client for AWS Amplify.
@@ -101,4 +103,14 @@ func (c *Client) Deploy(ctx context.Context, args DeployArgs) error {
 	case <-ctx.Done():
 		return ctx.Err()
 	}
+}
+
+// Version returns the module version.
+func (c *Client) Version() string {
+	info, ok := debug.ReadBuildInfo()
+	if !ok {
+		return "unknown"
+	}
+
+	return info.Main.Version
 }
